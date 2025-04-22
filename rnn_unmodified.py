@@ -104,9 +104,7 @@ model = LightweightLSTM(features_num, hidden_neurons_num, output_neurons_num, ls
 
 class_weights = compute_class_weight(class_weight='balanced', classes=np.unique(y_train), y=y_train)
 class_weights = torch.tensor(class_weights, dtype=torch.float).to(device=device)
-
-weights = torch.tensor([1, class_weights[1]], dtype=torch.float)
-criterion = nn.BCEWithLogitsLoss(torch.FloatTensor ([weights[1] / weights[0]])).to(device)
+criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 optimizer = optim.Adam(model.parameters(), lr=0.0005)
 
 batch_size = 128
